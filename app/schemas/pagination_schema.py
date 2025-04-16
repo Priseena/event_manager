@@ -2,7 +2,7 @@ import re
 from datetime import datetime
 from typing import List, Optional
 from uuid import UUID
-from pydantic import BaseModel, EmailStr, Field, HttpUrl, validator, conint
+from pydantic import BaseModel, EmailStr, Field, HttpUrl, validator, conint, ConfigDict
 
 # Pagination Model
 class Pagination(BaseModel):
@@ -11,8 +11,8 @@ class Pagination(BaseModel):
     total_items: int = Field(..., description="Total number of items.")
     total_pages: int = Field(..., description="Total number of pages.")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "page": 1,
                 "per_page": 10,
@@ -20,7 +20,7 @@ class Pagination(BaseModel):
                 "total_pages": 5
             }
         }
-
+    )
 
 
 class PaginationLink(BaseModel):

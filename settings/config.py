@@ -2,6 +2,7 @@ from builtins import bool, int, str
 from pathlib import Path
 from pydantic import  Field, AnyUrl, DirectoryPath
 from pydantic_settings import BaseSettings
+from pydantic import ConfigDict
 
 class Settings(BaseSettings):
     max_login_attempts: int = Field(default=3, description="Background color of QR codes")
@@ -31,7 +32,12 @@ class Settings(BaseSettings):
     postgres_db: str = Field(default='myappdb', description="PostgreSQL database name")
     # Discord configuration
     discord_bot_token: str = Field(default='NONE', description="Discord bot token")
-    discord_channel_id: int = Field(default=1234567890, description="Default Discord channel ID for the bot to interact", example=1234567890)
+    discord_channel_id: int = Field(
+    default=1234567890,
+    description="Default Discord channel ID for the bot to interact",
+    json_schema_extra={"example": 1234567890} 
+)
+
     #Open AI Key 
     openai_api_key: str = Field(default='NONE', description="Open AI Api Key")
     send_real_mail: bool = Field(default=False, description="use mock")
@@ -42,10 +48,9 @@ class Settings(BaseSettings):
     smtp_password: str = Field(default='your-mailtrap-password', description="Password for SMTP server")
 
 
-    class Config:
-        # If your .env file is not in the root directory, adjust the path accordingly.
-        env_file = ".env"
-        env_file_encoding = 'utf-8'
+    
+    model_config = ConfigDict(env_file=".env", env_file_encoding="utf-8")
+
 
 # Instantiate settings to be imported in your application
 settings = Settings()

@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field, HttpUrl
+from pydantic import ConfigDict
 
 class Link(BaseModel):
     rel: str = Field(..., description="Relation type of the link.")
@@ -6,7 +7,7 @@ class Link(BaseModel):
     action: str = Field(..., description="HTTP method for the action this link represents.")
     type: str = Field(default="application/json", description="Content type of the response for this link.")
 
-    class Config:
+    model_config = ConfigDict(
         json_schema_extra = {
             "example": {
                 "rel": "self",
@@ -15,3 +16,4 @@ class Link(BaseModel):
                 "type": "application/json"
             }
         }
+    )
